@@ -1,6 +1,10 @@
 .env
+.cloudflare-hybrid.env
+.tailscale-hybrid.env
 .kaggle/
 .openclaw/
+.cloudflared/
+.tailscale/
 .venv/
 __pycache__/
 .ipynb_checkpoints/

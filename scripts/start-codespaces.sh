@@ -29,4 +29,8 @@ chmod +x "$HOME/bin/start-openclaw"
 
 grep -q 'export PATH="$HOME/bin:$PATH"' "$HOME/.bashrc" || printf '\nexport PATH="$HOME/bin:$PATH"\n' >> "$HOME/.bashrc"
 
+if [ "${START_STACK:-1}" = "1" ]; then
+  bash "$ROOT_DIR/scripts/compose.sh" up -d kali openclaw
+fi
+
 echo "Codespaces ready."

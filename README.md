@@ -34,11 +34,16 @@ cloud-pc-hybrid/
     openclaw.Dockerfile
     entrypoint.sh
   scripts/
+    compose.sh
     bootstrap.sh
     start-codespaces.sh
     start-colab.sh
+    start-cloudflare.sh
     start-openclaw.sh
+    start-tailscale.sh
+    start-tunnel.sh
     start-vnc.sh
+  start.sh
 ```
 
 ## Rôle des couches
@@ -67,13 +72,13 @@ git branch -M main
 4. Lancer la pile locale:
 
 ```bash
-docker compose up -d kali openclaw
+bash start.sh
 ```
 
 5. Voir les logs OpenClaw:
 
 ```bash
-docker compose logs -f openclaw
+bash scripts/compose.sh logs -f openclaw
 ```
 
 6. Ouvrir le bureau VNC si besoin:
@@ -110,18 +115,41 @@ kaggle datasets list
 Le service OpenClaw tourne dans son propre conteneur.
 
 ```bash
-docker compose up -d openclaw
-docker compose logs -f openclaw
+bash scripts/compose.sh up -d openclaw
+bash scripts/compose.sh logs -f openclaw
 ```
 
 Le port par défaut est `18789`.
+
+## Tunnels
+
+Choisis un seul provider à la fois.
+
+### Cloudflare
+
+```bash
+export TUNNEL_PROVIDER=cloudflare
+export CLOUDFLARE_TUNNEL_TOKEN=...
+bash start.sh
+```
+
+### Tailscale
+
+> Tailscale suppose que le binaire `tailscale` est déjà installé et authentifié sur l’hôte.
+
+```bash
+export TUNNEL_PROVIDER=tailscale
+export TAILSCALE_MODE=serve
+export TAILSCALE_TARGET=localhost:18789
+bash start.sh
+```
 
 ## Commandes utiles
 
 ```bash
 git init
-docker compose up -d kali openclaw
-docker compose logs -f openclaw
+bash start.sh
+bash scripts/compose.sh logs -f openclaw
 bash scripts/start-vnc.sh
 ```
 

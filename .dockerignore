@@ -1,0 +1,9 @@
+.git
+.env
+.kaggle
+.openclaw
+.cloudflared
+.tailscale
+__pycache__
+.ipynb_checkpoints
+*.log
