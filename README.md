@@ -2,6 +2,8 @@
 
 Base Linux principale dans GitHub Codespaces, calcul GPU/RAM ponctuel dans Google Colab, avec un service OpenClaw dédié et Kaggle pour les jeux de données.
 
+Commence par [`quickstart.md`](/root/Documents/Codex/2026-05-10/cloud-pc-hybrid/quickstart.md).
+
 ## Architecture
 
 ```mermaid
@@ -69,19 +71,26 @@ git branch -M main
 1. Ouvrir le repo dans GitHub.
 2. Créer un Codespace.
 3. Laisser le bootstrap finir.
-4. Lancer la pile locale:
+4. Copier la config:
+
+```bash
+cp .env.example .env
+```
+
+5. Renseigner `CLOUDFLARE_TUNNEL_TOKEN` dans `.env`.
+6. Lancer la pile locale:
 
 ```bash
 bash start.sh
 ```
 
-5. Voir les logs OpenClaw:
+7. Voir les logs OpenClaw:
 
 ```bash
 bash scripts/compose.sh logs -f openclaw
 ```
 
-6. Ouvrir le bureau VNC si besoin:
+8. Ouvrir le bureau VNC si besoin:
 
 ```bash
 bash scripts/start-vnc.sh

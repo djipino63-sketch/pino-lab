@@ -10,10 +10,14 @@ fi
 
 STACK_PROFILE="${STACK_PROFILE:-full}"
 ENABLE_VNC="${ENABLE_VNC:-1}"
-TUNNEL_PROVIDER="${TUNNEL_PROVIDER:-none}"
+TUNNEL_PROVIDER="${TUNNEL_PROVIDER:-cloudflare}"
 
 if [ "${RUN_BOOTSTRAP:-1}" = "1" ]; then
   START_STACK=0 bash "$ROOT_DIR/scripts/start-codespaces.sh"
+fi
+
+if [ "$TUNNEL_PROVIDER" = "cloudflare" ] && [ -z "${CLOUDFLARE_TUNNEL_TOKEN:-}" ]; then
+  echo "CLOUDFLARE_TUNNEL_TOKEN is missing. Set it in .env before starting." >&2
 fi
 
 case "$STACK_PROFILE" in
