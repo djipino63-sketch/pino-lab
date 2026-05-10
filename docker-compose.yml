@@ -1,0 +1,37 @@
+services:
+  kali:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    command: sleep infinity
+    working_dir: /workspace
+    volumes:
+      - .:/workspace:cached
+    environment:
+      KAGGLE_CONFIG_DIR: /workspace/.kaggle
+      OPENCLAW_HOME: /workspace/.openclaw
+    tty: true
+    stdin_open: true
+    ports:
+      - "6080:6080"
+
+  openclaw:
+    build:
+      context: .
+      dockerfile: docker/openclaw.Dockerfile
+    working_dir: /workspace
+    volumes:
+      - .:/workspace:cached
+      - openclaw-state:/workspace/.openclaw
+    environment:
+      OPENCLAW_HOME: /workspace/.openclaw
+      OPENCLAW_STATE_DIR: /workspace/.openclaw
+      OPENCLAW_GATEWAY_PORT: "18789"
+      OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN:-}
+    ports:
+      - "18789:18789"
+    tty: true
+    stdin_open: true
+
+volumes:
+  openclaw-state:
