@@ -11,6 +11,7 @@ fi
 export OPENCLAW_HOME="${OPENCLAW_HOME:-$HOME/.openclaw}"
 export OPENCLAW_STATE_DIR="${OPENCLAW_STATE_DIR:-$OPENCLAW_HOME}"
 OPENCLAW_TOKEN_FILE="${OPENCLAW_TOKEN_FILE:-$OPENCLAW_HOME/gateway.token}"
+umask 077
 
 if ! command -v openclaw >/dev/null 2>&1; then
   echo "openclaw binary not found." >&2
@@ -31,6 +32,8 @@ else
   printf '%s' "$OPENCLAW_GATEWAY_TOKEN" >"$OPENCLAW_TOKEN_FILE"
   echo "Generated OPENCLAW_GATEWAY_TOKEN for this session."
 fi
+
+chmod 600 "$OPENCLAW_TOKEN_FILE" 2>/dev/null || true
 
 exec openclaw gateway run \
   --dev \

@@ -19,6 +19,7 @@ services:
     build:
       context: .
       dockerfile: docker/openclaw.Dockerfile
+    restart: unless-stopped
     working_dir: /workspace
     volumes:
       - .:/workspace:cached

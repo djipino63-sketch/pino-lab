@@ -54,6 +54,8 @@ fi
 case "$STACK_PROFILE" in
   full)
     log "Starting stack profile: full"
+    log "Preparing OpenClaw configuration."
+    bash "$ROOT_DIR/scripts/init-openclaw.sh"
     bash "$ROOT_DIR/scripts/compose.sh" up -d kali openclaw
     log "Following OpenClaw logs."
     nohup bash "$ROOT_DIR/scripts/compose.sh" logs -f openclaw >>"$LOG_DIR/openclaw.log" 2>&1 &
@@ -64,6 +66,8 @@ case "$STACK_PROFILE" in
     ;;
   openclaw)
     log "Starting stack profile: openclaw"
+    log "Preparing OpenClaw configuration."
+    bash "$ROOT_DIR/scripts/init-openclaw.sh"
     bash "$ROOT_DIR/scripts/compose.sh" up -d openclaw
     log "Following OpenClaw logs."
     nohup bash "$ROOT_DIR/scripts/compose.sh" logs -f openclaw >>"$LOG_DIR/openclaw.log" 2>&1 &

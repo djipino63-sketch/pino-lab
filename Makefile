@@ -1,7 +1,7 @@
 SHELL := /usr/bin/env bash
 .DEFAULT_GOAL := start
 
-.PHONY: start up down bootstrap logs logs-openclaw logs-vnc logs-tunnel vnc tunnel
+.PHONY: start up down bootstrap logs logs-openclaw logs-vnc logs-tunnel vnc tunnel openclaw-init openclaw-up openclaw
 
 start:
 	@bash ./start.sh
@@ -14,6 +14,15 @@ down:
 
 bootstrap:
 	@START_STACK=0 bash ./scripts/start-codespaces.sh
+
+openclaw-init:
+	@bash ./scripts/init-openclaw.sh
+
+openclaw-up:
+	@bash ./scripts/init-openclaw.sh
+	@bash ./scripts/compose.sh up -d openclaw
+
+openclaw: openclaw-up
 
 logs:
 	@mkdir -p logs

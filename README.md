@@ -126,11 +126,13 @@ kaggle datasets list
 
 ## OpenClaw
 
-Le service OpenClaw tourne dans son propre conteneur.
+Le service OpenClaw tourne dans son propre conteneur et la configuration locale se génère automatiquement au démarrage.
 
 ```bash
-bash scripts/compose.sh up -d openclaw
-bash scripts/compose.sh logs -f openclaw
+make openclaw
+make openclaw-init
+make openclaw-up
+make logs-openclaw
 ```
 
 Le port par défaut est `18789`.

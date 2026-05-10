@@ -10,4 +10,5 @@
 Notes:
 - `make start` lance la pile complète
 - Cloudflare se lance automatiquement quand le token est présent
+- OpenClaw génère sa config locale au démarrage
 - Colab reste séparé pour GPU/RAM
