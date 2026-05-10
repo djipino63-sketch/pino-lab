@@ -2,7 +2,7 @@
 
 Base Linux principale dans GitHub Codespaces, calcul GPU/RAM ponctuel dans Google Colab, avec un service OpenClaw dédié et Kaggle pour les jeux de données.
 
-Commence par [`quickstart.md`](/root/Documents/Codex/2026-05-10/cloud-pc-hybrid/quickstart.md).
+Commence par [quickstart.md](quickstart.md).
 
 ## Architecture
 
@@ -59,14 +59,7 @@ cloud-pc-hybrid/
 
 ## Démarrage
 
-### 1. Initialiser le repo local
-
-```bash
-git init
-git branch -M main
-```
-
-### 2. Démarrer Codespaces
+### 1. Démarrer Codespaces
 
 1. Ouvrir le repo dans GitHub.
 2. Créer un Codespace.
@@ -81,26 +74,38 @@ cp .env.example .env
 6. Lancer la pile locale:
 
 ```bash
-bash start.sh
+make start
 ```
 
-7. Voir les logs OpenClaw:
+7. Voir les logs centralisés:
 
 ```bash
-bash scripts/compose.sh logs -f openclaw
+make logs
 ```
 
-8. Ouvrir le bureau VNC si besoin:
+8. Voir OpenClaw:
 
 ```bash
-bash scripts/start-vnc.sh
+make logs-openclaw
 ```
 
-### 3. Démarrer Colab
+9. Voir le log VNC si besoin:
+
+```bash
+make logs-vnc
+```
+
+### 2. Démarrer Colab
 
 1. Ouvrir `colab/cloud_pc_colab.ipynb`.
 2. Exécuter les cellules de haut en bas.
 3. Utiliser Colab uniquement pour le GPU/RAM, l’IA et les travaux ponctuels.
+
+### 3. Démarrage plus verbeux
+
+```bash
+DEBUG=1 make start
+```
 
 ## Kaggle
 
@@ -137,10 +142,11 @@ Choisis un seul provider à la fois.
 ### Cloudflare
 
 ```bash
-export TUNNEL_PROVIDER=cloudflare
 export CLOUDFLARE_TUNNEL_TOKEN=...
-bash start.sh
+make start
 ```
+
+Cloudflare démarre automatiquement quand `CLOUDFLARE_TUNNEL_TOKEN` est présent. Sans token, le tunnel est désactivé.
 
 ### Tailscale
 
@@ -150,16 +156,19 @@ bash start.sh
 export TUNNEL_PROVIDER=tailscale
 export TAILSCALE_MODE=serve
 export TAILSCALE_TARGET=localhost:18789
-bash start.sh
+make start
 ```
 
 ## Commandes utiles
 
 ```bash
-git init
-bash start.sh
-bash scripts/compose.sh logs -f openclaw
-bash scripts/start-vnc.sh
+make start
+make logs
+make logs-openclaw
+make vnc
+make tunnel
+make logs-vnc
+make logs-tunnel
 ```
 
 ## Philosophie

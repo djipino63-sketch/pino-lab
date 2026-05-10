@@ -5,6 +5,7 @@
 .openclaw/
 .cloudflared/
 .tailscale/
+logs/
 .venv/
 __pycache__/
 .ipynb_checkpoints/

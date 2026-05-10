@@ -4,6 +4,7 @@
 .openclaw
 .cloudflared
 .tailscale
+logs
 __pycache__
 .ipynb_checkpoints
 *.log

@@ -1,12 +1,13 @@
 # Quickstart
 
 1. `cp .env.example .env`
-2. Renseigne `CLOUDFLARE_TUNNEL_TOKEN` dans `.env`
-3. `bash start.sh`
-4. Ouvre `http://127.0.0.1:6080` pour VNC si le port est forwardé
-5. Regarde OpenClaw avec `bash scripts/compose.sh logs -f openclaw`
+2. Renseigne `CLOUDFLARE_TUNNEL_TOKEN` dans `.env` si tu veux un tunnel Cloudflare
+3. `make start`
+4. Regarde les logs centralisés avec `make logs`
+5. Regarde OpenClaw avec `make logs-openclaw`
+6. Ouvre `http://127.0.0.1:6080` pour VNC si le port est forwardé
 
 Notes:
-- `bash start.sh` lance la pile complète
-- Cloudflare est le tunnel par défaut
+- `make start` lance la pile complète
+- Cloudflare se lance automatiquement quand le token est présent
 - Colab reste séparé pour GPU/RAM

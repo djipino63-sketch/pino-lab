@@ -3,6 +3,11 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+if [ -f "$ROOT_DIR/.env" ]; then
+  # shellcheck disable=SC1090
+  source "$ROOT_DIR/.env"
+fi
+
 PROFILE="${PROFILE:-fast}" \
 INSTALL_FAST_TOOLS="${INSTALL_FAST_TOOLS:-1}" \
 INSTALL_DESKTOP="${INSTALL_DESKTOP:-0}" \
