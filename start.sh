@@ -56,21 +56,19 @@ case "$STACK_PROFILE" in
     log "Starting stack profile: full"
     log "Preparing OpenClaw configuration."
     bash "$ROOT_DIR/scripts/init-openclaw.sh"
-    bash "$ROOT_DIR/scripts/compose.sh" up -d kali openclaw
     log "Following OpenClaw logs."
-    nohup bash "$ROOT_DIR/scripts/compose.sh" logs -f openclaw >>"$LOG_DIR/openclaw.log" 2>&1 &
+    nohup bash "$ROOT_DIR/scripts/start-openclaw.sh" >>"$LOG_DIR/openclaw.log" 2>&1 &
     ;;
   kali)
     log "Starting stack profile: kali"
-    bash "$ROOT_DIR/scripts/compose.sh" up -d kali
+    log "Kali profile maps to the host bootstrap in Codespaces."
     ;;
   openclaw)
     log "Starting stack profile: openclaw"
     log "Preparing OpenClaw configuration."
     bash "$ROOT_DIR/scripts/init-openclaw.sh"
-    bash "$ROOT_DIR/scripts/compose.sh" up -d openclaw
     log "Following OpenClaw logs."
-    nohup bash "$ROOT_DIR/scripts/compose.sh" logs -f openclaw >>"$LOG_DIR/openclaw.log" 2>&1 &
+    nohup bash "$ROOT_DIR/scripts/start-openclaw.sh" >>"$LOG_DIR/openclaw.log" 2>&1 &
     ;;
   *)
     echo "Invalid STACK_PROFILE: $STACK_PROFILE" >&2

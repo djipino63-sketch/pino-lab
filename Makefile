@@ -7,10 +7,10 @@ start:
 	@bash ./start.sh
 
 up:
-	@bash ./scripts/compose.sh up -d kali openclaw
+	@bash ./start.sh
 
 down:
-	@bash ./scripts/compose.sh down
+	@pkill -f 'start-openclaw.sh|start-vnc.sh|start-tunnel.sh' >/dev/null 2>&1 || true
 
 bootstrap:
 	@START_STACK=0 bash ./scripts/start-codespaces.sh
@@ -20,7 +20,7 @@ openclaw-init:
 
 openclaw-up:
 	@bash ./scripts/init-openclaw.sh
-	@bash ./scripts/compose.sh up -d openclaw
+	@bash ./scripts/start-openclaw.sh
 
 openclaw: openclaw-up
 
@@ -30,7 +30,9 @@ logs:
 	@tail -f logs/start.log
 
 logs-openclaw:
-	@bash ./scripts/compose.sh logs -f openclaw
+	@mkdir -p logs
+	@touch logs/openclaw.log
+	@tail -f logs/openclaw.log
 
 logs-vnc:
 	@mkdir -p logs

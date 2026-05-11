@@ -21,6 +21,25 @@ fi
 
 mkdir -p "$OPENCLAW_HOME"
 
+CONFIG_FILE="$OPENCLAW_HOME/openclaw.json"
+if [ -f "$CONFIG_FILE" ]; then
+  node - "$CONFIG_FILE" <<'NODE'
+const fs = require("fs");
+const path = process.argv[2];
+const config = JSON.parse(fs.readFileSync(path, "utf8"));
+
+config.gateway = config.gateway ?? {};
+config.gateway.bind = "lan";
+config.gateway.controlUi = {
+  ...(config.gateway.controlUi ?? {}),
+  enabled: config.gateway.controlUi?.enabled ?? true,
+  allowedOrigins: ["*"],
+};
+
+fs.writeFileSync(path, JSON.stringify(config, null, 2) + "\n");
+NODE
+fi
+
 if [ -n "${OPENCLAW_GATEWAY_TOKEN:-}" ]; then
   printf '%s' "$OPENCLAW_GATEWAY_TOKEN" >"$OPENCLAW_TOKEN_FILE"
 elif [ -f "$OPENCLAW_TOKEN_FILE" ]; then

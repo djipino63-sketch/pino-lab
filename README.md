@@ -1,6 +1,6 @@
 # Cloud PC Hybrid
 
-Base Linux principale dans GitHub Codespaces, calcul GPU/RAM ponctuel dans Google Colab, avec un service OpenClaw dédié et Kaggle pour les jeux de données.
+Base Linux principale dans GitHub Codespaces, calcul GPU/RAM ponctuel dans Google Colab, avec OpenClaw tournant directement sur l’hôte et Kaggle pour les jeux de données.
 
 Commence par [quickstart.md](quickstart.md).
 
@@ -10,7 +10,7 @@ Commence par [quickstart.md](quickstart.md).
 flowchart TD
   A[Android] --> B[Codespaces]
   B --> C[Docker: Kali]
-  B --> D[Docker: OpenClaw]
+  B --> D[OpenClaw host]
   B --> E[Tunnels: Cloudflare / Tailscale]
   E --> A
   B --> F[Git repo unique]
@@ -52,7 +52,7 @@ cloud-pc-hybrid/
 
 - `Codespaces`: machine Linux principale, persistante, terminal, Docker, VS Code web
 - `Docker Kali`: environnement reproductible pour les outils Linux/Kali
-- `Docker OpenClaw`: service d’automatisation séparé
+- `OpenClaw`: service d’automatisation séparé, lancé directement sur l’hôte
 - `Tunnels`: accès distant stable
 - `Colab`: GPU/RAM temporaire pour IA/LLM et tâches lourdes
 - `Kaggle`: récupération de datasets et notebooks data
@@ -70,7 +70,7 @@ cloud-pc-hybrid/
 cp .env.example .env
 ```
 
-5. Renseigner `CLOUDFLARE_TUNNEL_TOKEN` dans `.env`.
+5. Renseigner `CLOUDFLARE_TUNNEL_TOKEN` dans `.env` seulement si tu veux activer Cloudflare avec un jeton valide.
 6. Lancer la pile locale:
 
 ```bash
@@ -126,7 +126,7 @@ kaggle datasets list
 
 ## OpenClaw
 
-Le service OpenClaw tourne dans son propre conteneur et la configuration locale se génère automatiquement au démarrage.
+Le service OpenClaw tourne directement sur l’hôte et la configuration locale se génère automatiquement au démarrage.
 
 ```bash
 make openclaw
@@ -148,7 +148,7 @@ export CLOUDFLARE_TUNNEL_TOKEN=...
 make start
 ```
 
-Cloudflare démarre automatiquement quand `CLOUDFLARE_TUNNEL_TOKEN` est présent. Sans token, le tunnel est désactivé.
+Cloudflare démarre automatiquement quand `CLOUDFLARE_TUNNEL_TOKEN` est présent. Sans jeton valide, laisse `TUNNEL_PROVIDER=none` dans `.env`.
 
 ### Tailscale
 

@@ -19,16 +19,31 @@ if [ -z "${CLOUDFLARE_TUNNEL_TOKEN:-}" ]; then
   exit 1
 fi
 
-if command -v cloudflared >/dev/null 2>&1; then
-  exec cloudflared tunnel run --token "$CLOUDFLARE_TUNNEL_TOKEN" "$@"
+if ! command -v cloudflared >/dev/null 2>&1; then
+  arch="$(uname -m)"
+  case "$arch" in
+    x86_64) pkg_arch="amd64" ;;
+    aarch64|arm64) pkg_arch="arm64" ;;
+    *)
+      echo "Unsupported architecture for cloudflared auto-install: $arch" >&2
+      exit 1
+      ;;
+  esac
+
+  tmp_deb="$(mktemp /tmp/cloudflared.XXXXXX.deb)"
+  curl -fsSL -o "$tmp_deb" \
+    "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${pkg_arch}.deb"
+
+  if [ "$(id -u)" -eq 0 ]; then
+    dpkg -i "$tmp_deb" >/dev/null
+  elif command -v sudo >/dev/null 2>&1; then
+    sudo dpkg -i "$tmp_deb" >/dev/null
+  else
+    echo "Need root or sudo to install cloudflared." >&2
+    exit 1
+  fi
+
+  rm -f "$tmp_deb"
 fi
 
-if command -v docker >/dev/null 2>&1; then
-  exec docker run --rm -i \
-    -e TUNNEL_TOKEN="$CLOUDFLARE_TUNNEL_TOKEN" \
-    cloudflare/cloudflared:latest \
-    tunnel --no-autoupdate run --token "$CLOUDFLARE_TUNNEL_TOKEN" "$@"
-fi
-
-echo "Need cloudflared or Docker for Cloudflare Tunnel." >&2
-exit 1
+exec cloudflared tunnel run --token "$CLOUDFLARE_TUNNEL_TOKEN" "$@"

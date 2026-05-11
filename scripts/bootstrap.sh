@@ -63,7 +63,7 @@ DESKTOP_PACKAGES=(
 
 install_packages "${BASE_PACKAGES[@]}"
 
-python3 -m pip install --user --upgrade pip kaggle
+python3 -m pip install --user --break-system-packages --upgrade pip kaggle
 grep -q 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.bashrc" 2>/dev/null || \
   printf '\nexport PATH="$HOME/.local/bin:$PATH"\n' >> "$HOME/.bashrc"
 
@@ -76,7 +76,10 @@ if [ "$INSTALL_DESKTOP" = "1" ] || [ "$PROFILE" = "full" ]; then
 fi
 
 if [ "$INSTALL_OPENCLAW" = "1" ]; then
-  install_packages docker.io docker-compose-plugin
+  if ! command -v openclaw >/dev/null 2>&1; then
+    install_packages nodejs npm
+    npm install -g openclaw
+  fi
 fi
 
 apt_get clean || true
